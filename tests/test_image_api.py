@@ -27,14 +27,11 @@ class TestImageAPI(unittest.TestCase):
             capture_output=True
         )
         self.assertEqual(result.returncode, 0)
-        # Сохраняем изображение во временный файл для проверки
         with open('test_image_received.jpg', 'wb') as f:
             f.write(result.stdout)
 
-        # Проверяем, что файл был создан и имеет ненулевой размер
         self.assertTrue(os.path.getsize('test_image_received.jpg') > 0, "Received image is empty")
 
-        # Удаляем временный файл
         os.remove('test_image_received.jpg')
 
 
@@ -56,7 +53,6 @@ class TestImageAPI(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0)
         response_json = json.loads(result.stdout)
-        # Проверьте, что ответ содержит текст 'Success!'
         self.assertIn('Success!', response_json)
 
 

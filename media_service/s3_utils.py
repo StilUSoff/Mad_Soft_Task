@@ -17,16 +17,13 @@ def get_s3_client():
 
 def create_bucket(s3_client, bucket_name):
     try:
-        # Проверяем существует ли бакет
         s3_client.head_bucket(Bucket=bucket_name)
         print(f"Bucket {bucket_name} already exists.")
     except ClientError as e:
-        # Если бакет не существует, создаем его
         if e.response['Error']['Code'] == '404':
             s3_client.create_bucket(Bucket=bucket_name)
             print(f"Bucket {bucket_name} created successfully.")
         else:
-            # Обработка других ошибок
             print(f"Failed to check or create bucket: {e}")
             raise
 
@@ -58,7 +55,7 @@ async def update_file_in_s3(s3_client, bucket_name, meme_id, file: UploadFile):
     s3_client.upload_file(
         Filename=file.filename,
         Bucket=bucket_name,
-        Key=f'{str(meme_id)}.jpg'  # Используем meme_id в качестве ключа
+        Key=f'{str(meme_id)}.jpg'
     )
     # Генерация URL для доступа к файлу
     file_url = f"http://localhost:9000/{bucket_name}/{meme_id}.jpg'"
